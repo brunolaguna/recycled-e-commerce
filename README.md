@@ -11,3 +11,9 @@
     2. Criar uma lista de produtos
     3. Adicionar as imagens dos produtos
     4. Renderizar os produtos
+5. 
+6. Adicionar página através do react-router-dom
+    1. npm i react-router-dom
+    2. Criar rota para a página principal
+    3. Criar rota para a página de produtos
+    4. Criar rota para a página de produtos

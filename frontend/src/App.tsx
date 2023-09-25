@@ -1,32 +1,28 @@
-import './App.css'
-import { produtosAmostra } from './dado'
+import { Container, Nav, Navbar } from 'react-bootstrap'
+import { Outlet } from 'react-router-dom'
 
 function App() {
 
   return (
-    <div>
+    <div className='d-flex flex-column vh-100'>
       <header>
-        Recycled E-commerce
+        <Navbar className='navBar' variant='dark' expand="lg">
+          <Container>
+            <Navbar.Brand><b>Recycled-E-Commerce</b></Navbar.Brand>
+          </Container>
+          <Nav>
+            <a href='/carrinho' className='nav-link'>Carrinho</a>
+            <a href='/entrar' className='nav-link'>Entrar</a>
+          </Nav>
+        </Navbar>
       </header>
       <main>
-        <ul>
-          {
-            produtosAmostra.map((produto) => (
-              <li key={produto.slug}>
-                <h2>{produto.nome}</h2>
-                <img 
-                  src={produto.imagem} 
-                  alt={produto.nome} 
-                  className='product-image'>  
-                </img>
-                <p>R${produto.preco}</p>
-              </li>
-            ))
-          }
-        </ul>
+        <Container className='mt-3'>
+          <Outlet />
+        </Container>
       </main>
       <footer>
-        Todos os direitos são reservados
+        <div className='text-center'>Todos os direitos são reservados</div>
       </footer>
     </div>
   )
