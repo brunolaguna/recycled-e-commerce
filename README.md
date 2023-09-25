@@ -1,3 +1,13 @@
 # TypeScript MERN Recylced-E-commerce
 
-Aqui já foi intalado as ferramentas necessária por enquanto para a criação do projeto, criamos o TSX App pelo Vite e foi criado o repositório do GitHub.
+1. Ferramentas instaladas
+2. Criado a aplicação usando o Vite (TSX)
+3. Criado o repositório Git
+    1. README.md adicionado
+    2. conectado vs code com o GitHub
+    3. Repositório publicado
+4. Lista de Produtos
+    1. Criar o tipo de Produto
+    2. Criar uma lista de produtos
+    3. Adicionar as imagens dos produtos
+    4. Renderizar os produtos
