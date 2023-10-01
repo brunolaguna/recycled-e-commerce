@@ -9,11 +9,16 @@
 
 .navBar
 {
-  background-color: green;
+  background-color: rgba(0, 124, 0, 0.795);
 }
 
 .product-image
 {
   max-width: 400px;
   width: 65%;
+}
+
+.avaliacao span
+{
+  color: gold;
 }

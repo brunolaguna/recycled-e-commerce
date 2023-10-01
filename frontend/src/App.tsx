@@ -7,8 +7,9 @@ function App() {
     <div className='d-flex flex-column vh-100'>
       <header>
         <Navbar className='navBar' variant='dark' expand="lg">
+          <div>oi</div>
           <Container>
-            <Navbar.Brand><b>Recycled-E-Commerce</b></Navbar.Brand>
+            <Navbar.Brand><b>ReciclaOn</b></Navbar.Brand>
           </Container>
           <Nav>
             <a href='/carrinho' className='nav-link'>Carrinho</a>
