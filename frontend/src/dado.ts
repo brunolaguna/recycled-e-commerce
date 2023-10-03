@@ -9,11 +9,12 @@ export const produtosAmostra: Produto[] =
         subCategoria: 'Cadeira',
         imagem: 'https://www.reciclasampa.com.br/imgs/conteudos/CAPA_TEXTO_DEEZEN_769x448px.jpg',
         preco: 50,
-        contagemEstoque: 1,
+        contagemEstoque: 0,
         marca: 'ecoBirdy',
         avaliacao: 0.0,
         visualizacao: 0,
-        descricao: 'Cadeiras para crianças a partir da coleta e reutilização de brinquedos plásticos antigos.'
+        descricao: 'Cadeiras para crianças a partir da coleta e reutilização de brinquedos plásticos antigos.',
+        _id: 'a'
     },
     {
         nome: 'Caderno Kraft',
@@ -26,7 +27,8 @@ export const produtosAmostra: Produto[] =
         marca: 'Kraft',
         avaliacao: 0.0,
         visualizacao: 0,
-        descricao: 'O Caderno Kraft incentiva a produção de produtos recicláveis exatamente porque o kraft é de celulose 100% fibra virgem, o que dá seu teor de reaproveitamento.'
+        descricao: 'O Caderno Kraft incentiva a produção de produtos recicláveis exatamente porque o kraft é de celulose 100% fibra virgem, o que dá seu teor de reaproveitamento.',
+        _id: 'b'
     },
     {
         nome: 'Chapéu de Lona',
@@ -39,7 +41,8 @@ export const produtosAmostra: Produto[] =
         marca: '',
         avaliacao: 0.0,
         visualizacao: 0,
-        descricao: 'O Chapéu de Lona é feito de material que costuma cobrir as cargas de caminhão, ele é reconhecido por sua boa duração e por dar um estilo mais rústico a quem o usa.'
+        descricao: 'O Chapéu de Lona é feito de material que costuma cobrir as cargas de caminhão, ele é reconhecido por sua boa duração e por dar um estilo mais rústico a quem o usa.',
+        _id: 'c'
     },
     {
         nome: 'Camiseta de garrafa Pet',
@@ -52,6 +55,7 @@ export const produtosAmostra: Produto[] =
         marca: '',
         avaliacao: 0.0,
         visualizacao: 0,
-        descricao: 'A camiseta de garrafa de Pet é feito de um processo em que as fibras de pet são quebradas e reorganizadas até se transformarem em um tecido.'
+        descricao: 'A camiseta de garrafa de Pet é feito de um processo em que as fibras de pet são quebradas e reorganizadas até se transformarem em um tecido.',
+        _id: 'd'
     }
 ]

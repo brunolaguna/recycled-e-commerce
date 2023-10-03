@@ -1,4 +1,6 @@
-import { Produto } from "./types/Produto";
+import bcrypt from 'bcryptjs'
+import { Usuario } from "./modelos/modeloDeUsuario";
+import { Produto } from "./modelos/modeloDeProduto";
 
 export const produtosAmostra: Produto[] =
 [
@@ -54,4 +56,20 @@ export const produtosAmostra: Produto[] =
         visualizacao: 0,
         descricao: 'A camiseta de garrafa de Pet é feito de um processo em que as fibras de pet são quebradas e reorganizadas até se transformarem em um tecido.'
     }
+]
+
+export const usuariosAmostra: Usuario[] = 
+[
+    {
+        nome: 'Bruno',
+        email: 'bruno_cs1.8@hotmail.com',
+        senha: bcrypt.hashSync('123456'),
+        isAdmin: true
+    },
+    {
+        nome: 'Teste',
+        email: 'teste@hotmail.com',
+        senha: bcrypt.hashSync('123456'),
+        isAdmin: false
+    },
 ]

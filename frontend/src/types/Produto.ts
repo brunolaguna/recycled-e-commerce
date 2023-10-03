@@ -1,5 +1,6 @@
 export type Produto = 
 {
+    _id: string
     nome: string
     slug: string
     imagem: string
