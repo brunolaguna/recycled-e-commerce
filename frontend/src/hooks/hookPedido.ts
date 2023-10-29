@@ -13,7 +13,7 @@ export const usePaypalClientIdQuery = () =>
   useQuery({
     queryKey: ['paypal-clientId'],
     queryFn: async () =>
-      (await apiClient.get<{ IdDoCliente: string }>(`/api/chaves/paypal`)).data,
+      (await apiClient.get<{ IdDoCliente: string }>(`api/chaves/paypal`)).data,
   })
 
 export const usePagamentoDoPedidoMutation = () =>
@@ -49,5 +49,5 @@ export const useGetHistoricoPedidoQuery = () =>
   useQuery({
     queryKey: ['historico-pedido'],
     queryFn: async () =>
-      (await apiClient.get<Pedido[]>(`/api/pedidos/meu`)).data,
+      (await apiClient.get<Pedido[]>(`api/pedidos/meu`)).data,
   })

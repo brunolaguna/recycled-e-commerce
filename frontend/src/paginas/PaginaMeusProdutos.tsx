@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
 import { useGetMeusProdutosQuery } from "../hooks/hookProduto"
 import { ApiError } from "../types/ApiError"
 import { getError } from "../utilidades"
@@ -13,32 +11,14 @@ export function PaginaMeusProdutos()
 {
     const proprietario : string = JSON.parse(localStorage.getItem('infoDeUsuario')!).email
     const { data: produtos, isLoading, error } = useGetMeusProdutosQuery(proprietario)
-    
-    //const navigate = useNavigate()
-    
-    //const { search } = useLocation()
-    //const redirectInUrl = new URLSearchParams(search).get('redireciona')
-    //const redirect = redirectInUrl ? redirectInUrl : '/'
 
-    //const [nome, setNome] = useState<string>('')
-    //const [imagem, setImagem] = useState<string>('')
-    //const [precoDoProduto, setPrecoDoProduto] = useState<number>(0)
-
-
-    //useEffect(() =>
-    //{
-    //  setSlugDoProduto(nome.replaceAll(' ', '-'))
-    //  console.log(slug)
-    //  console.log(nome)
-    //  console.log(imagem)
-    //}, [nome])
     return isLoading ? (
         <Carregando />
       ) : error ? (
         <MensagemDeAlerta variant="danger">
           {getError(error as ApiError)}
         </MensagemDeAlerta>
-      ) : proprietario === JSON.parse(localStorage.getItem('infoDeUsuario')!).email ? (
+      ) : (
         <Row>
           <Helmet>
             <title>Meus Produtos</title>
@@ -50,5 +30,5 @@ export function PaginaMeusProdutos()
             </Col>
           ))}
         </Row>
-      ) : console.log('Tratativa')
+      )
 }

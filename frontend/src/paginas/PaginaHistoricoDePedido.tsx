@@ -40,13 +40,13 @@ export default function PaginaHistoricoDePedido() {
             {pedidos!.map((pedido) => (
               <tr key={pedido._id}>
                 <td>{pedido._id}</td>
-                <td>{pedido.criadoEm.substring(0, 10)}</td>
+                <td>{pedido.criadoEm}</td>
                 <td>{pedido.precoTotal.toFixed(2)}</td>
                 <td>
-                  {pedido.foiPago ? pedido.pagoEm.substring(0, 10) : 'Não'}
+                  {pedido.foiPago ? pedido.pagoEm : 'Não'}
                 </td>
                 <td>
-                  {pedido.enviado ? pedido.enviadoEm.substring(0, 10) : 'Não'}
+                  {pedido.enviado ? pedido.enviadoEm : 'Não'}
                 </td>
                 <td>
                   <Button

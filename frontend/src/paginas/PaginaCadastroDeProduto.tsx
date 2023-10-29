@@ -31,10 +31,6 @@ export function PaginaCadastroDeProduto()
   useEffect(() =>
   {
     setSlugDoProduto(nome.replaceAll(' ', '-'))
-    console.log(slug)
-    console.log(nome)
-    console.log(imagem)
-    console.log(proprietario)
   }, [nome])
 
   const { mutateAsync: cadastrarProduto } = useCadastrarProdutoMutation()
@@ -57,7 +53,6 @@ export function PaginaCadastroDeProduto()
         descricaoDoProduto,
         proprietario
       })
-      console.log(data)
       navigate('/editarProdutos')
     } catch (err) {
       toast.error(getError(err as ApiError))

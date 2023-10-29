@@ -20,7 +20,7 @@ export const useGetCategoriasQuery = () =>
   useQuery({
     queryKey: ['categorias'],
     queryFn: async () =>
-      (await apiClient.get<[]>(`/api/produtos/categorias`)).data,
+      (await apiClient.get<[]>(`api/produtos/categorias`)).data,
   })
 
 export const useGetMeusProdutosQuery = (proprietario: string, ) =>
@@ -110,6 +110,23 @@ useMutation({
         marcaDoProduto,
         descricaoDoProduto,
         proprietario
+      })
+    ).data,
+})
+
+export const usePedidoRealizadoMutation = () =>
+useMutation({
+  mutationFn: async ({
+    _id,
+    quantidadeDoProduto
+  }: {
+    _id : string
+    quantidadeDoProduto: number
+  }) =>
+    (
+      await apiClient.put<InfoDeUsuario>(`api/produtos/produtoComprado`, {
+        _id,
+        quantidadeDoProduto
       })
     ).data,
 })

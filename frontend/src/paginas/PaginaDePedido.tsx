@@ -19,6 +19,7 @@ import {
 import { Contexto } from '../Contexto'
 import { ApiError } from '../types/ApiError'
 import { getError } from '../utilidades'
+import { usePedidoRealizadoMutation } from '../hooks/hookProduto'
 
 export default function PaginaDePedido() {
   const { estado } = useContext(Contexto)
@@ -37,10 +38,26 @@ export default function PaginaDePedido() {
   const { mutateAsync: pagarPedido, isLoading: carregandoPagamento } =
     usePagamentoDoPedidoMutation()
 
+  const { mutateAsync: pedidoRealizado } = usePedidoRealizadoMutation()
+
   const testeDePagamento = async () => {
     await pagarPedido({ idDePedido: idDePedido! })
+
     refetch()
+    
     toast.success('Pedido foi pago')
+    for ( let i = 0; i < pedido?.itensDePedido.length!; i++ )
+    {
+      if(pedido)
+      {
+        const _id = pedido.itensDePedido[i]._id
+        const quantidadeDoProduto = pedido.itensDePedido[i].emEstoque - pedido.itensDePedido[i].quantidade
+        pedidoRealizado({
+          _id,
+          quantidadeDoProduto
+        })
+      }
+    }
   }
 
   const [{ isPending, isRejected }, paypalDispatch] = usePayPalScriptReducer()

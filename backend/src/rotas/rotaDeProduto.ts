@@ -39,7 +39,6 @@ rotaDeProduto.get(
   expressAsyncHandler(async (req, res) => {
     const produto = await ModeloDeProduto.find({ proprietario: req.params.proprietario })
     if (produto) {
-      //console.log(produto)
       res.json(produto)
     } else {
       res.status(404).json({ message: 'Produto não encontrado' })
@@ -60,12 +59,10 @@ rotaDeProduto.get(
     //} catch {
     //  res.status(404).json({message: 'Produto não encontrado!'})
     //}
-    console.log(req.body.nome)
-    console.log(req.params._id)
     if (req.body._id) 
     {
       const dadosDoProduto = await ModeloDeProduto.findById(req.body._id)
-      console.log('Produto selecionado'+dadosDoProduto)
+
       res.json({ dadosDoProduto })
       return
     } else {
@@ -110,6 +107,37 @@ rotaDeProduto.put(
 
     } catch {
       res.status(404).json({message: 'Produto não encontrado!'})
+    }
+    }
+  )
+)
+
+rotaDeProduto.put(
+  '/produtoComprado',
+  autenticado,
+  expressAsyncHandler(async (req: Request, res: Response) => 
+  {
+    //const nome = await ModeloDeProduto.findOne(req.body.nome)
+    //const proprietario = await ModeloDeProduto.findOne(req.body.proprietario)
+    try{
+      await ModeloDeProduto.updateOne(
+        {
+          _id: req.body._id
+        },
+        {
+          $set:
+          {
+            emEstoque: req.body.quantidadeDoProduto
+          }
+        },
+        {
+          upsert: false, // Set to true if you want to insert a new document if no match is found
+        }
+      )
+      res.status(200).json({message: 'Pedido realizado com sucesso!'})
+
+    } catch {
+      res.status(404).json({message: 'Erro ao realizar a compra!'})
     }
     }
   )

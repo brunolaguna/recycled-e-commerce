@@ -63,17 +63,30 @@ rotaDePedido.put(
 
     if (pedido) {
       pedido.foiPago = true
-      const date = new Date()
-      const dia = date.getDay()
-      const mes = date.getMonth() + 1
-      const ano = date.getFullYear()
-      const hora = date.getHours()
-      const minuto = date.getMinutes()
-      const segundo = date.getSeconds()
-      const milisegundos = date.getMilliseconds()
+      //pedido.pagoEm = new Date(Date.now())
+      //const date = new Date()
+      //const dia = date.getDate()
+      //const mes = date.getMonth() + 1
+      //const ano = date.getFullYear()
+      //const hora = date.setHours(hours: date.getHours() + 3)
+      //const minuto = date.getMinutes()
+      //const segundo = date.getSeconds()
+      //const milisegundos = date.getMilliseconds()
 
-      pedido.pagoEm = `${dia}-${mes}-${ano}T${hora - 3}:${minuto}:${segundo}.${milisegundos}Z`
-      console.log(pedido.pagoEm)
+      const dataHora = new Date(Date.now());
+      const opcoes : object = {
+        timeZone: 'America/Sao_Paulo',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      };
+      const dataHoraBrasil = dataHora.toLocaleString('pt-BR', opcoes);
+
+      pedido.pagoEm = dataHoraBrasil
+      
       pedido.resultadoDePagamento = {
         IdDePagamento: req.body.id,
         status: req.body.status,

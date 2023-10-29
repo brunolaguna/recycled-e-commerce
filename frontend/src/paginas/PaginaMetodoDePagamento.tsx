@@ -52,10 +52,20 @@ export default function PaginaMetodoDePagamento() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Stripe"
-              label="Stripe"
-              value="Stripe"
-              checked={nomeMetodoDePagamento === 'Stripe'}
+              id="Boleto"
+              label="Boleto"
+              value="Boleto"
+              checked={nomeMetodoDePagamento === 'Boleto'}
+              onChange={(e) => setNomeMetodoDePagamento(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <Form.Check
+              type="radio"
+              id="Pix"
+              label="Pix"
+              value="Pix"
+              checked={nomeMetodoDePagamento === 'Pix'}
               onChange={(e) => setNomeMetodoDePagamento(e.target.value)}
             />
           </div>

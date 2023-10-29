@@ -75,7 +75,6 @@ export function PaginaEditarProduto()
         descricaoDoProduto,
         proprietario
       })
-      console.log(data)
       //navigate('/editarProduto')
       toast.success('Produto atualizado com sucesso!')
       navigate('/')

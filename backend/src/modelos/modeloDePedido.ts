@@ -1,8 +1,9 @@
 import { modelOptions as opcaoDeModelo, Ref, getModelForClass, prop as propriedade } from '@typegoose/typegoose'
 import { Usuario } from './ModeloDeUsuario'
 import { Produto } from './ModeloDeProduto'
+import { Mixed } from 'mongoose'
 
-class Item 
+class Item
 {
   @propriedade({ ref: Produto })
   public produto?: Ref<Produto>
@@ -60,7 +61,7 @@ export class Pedido {
   public enderecoDeEnvio?: EnderecoDeEnvio
 
   @propriedade()
-  public itensDePedido!: Item[]
+  public itensDePedido!: Item[] | Mixed
   
   @propriedade()
   public resultadoDePagamento?: ResultadoDePagamento
