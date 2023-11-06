@@ -102,7 +102,7 @@ function App() {
             <LinkContainer to="/" className="header-link">
               <Navbar.Brand>{backScreen}</Navbar.Brand>
             </LinkContainer>
-            <SearchBox />
+            {/*<SearchBox />*/}
 
             <Navbar.Collapse className='d-lg-none'>
               <Nav className="w-100 justify-content-end flex-row">

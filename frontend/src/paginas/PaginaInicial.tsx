@@ -6,9 +6,19 @@ import ItemDeProduto from '../componentes/ItemDeProduto'
 import { useGetProdutosQuery } from '../hooks/hookProduto'
 import { ApiError } from '../types/ApiError'
 import { getError } from '../utilidades'
+import SearchBox from '../componentes/SearchBox'
 
-export default function PaginaInicial() {
+export default function PaginaInicial() 
+{
   const { data: produtos, isLoading, error } = useGetProdutosQuery()
+  
+  /*
+  const callBack = (data) =>
+  {
+
+  }
+  */
+
   return isLoading ? (
     <Carregando />
   ) : error ? (
