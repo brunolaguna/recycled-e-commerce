@@ -9,11 +9,10 @@ import { converteProdutoEmItemDeCarrinho } from '../utilidades'
 import Avaliacao from './Avaliacao'
 
 function ItemDeProduto({ produto }: { produto: Produto }) {
-  const { estado, dispatch } = useContext(Contexto)
+  const { estado, dispatch, estado: {modo} } = useContext(Contexto)
   const {
     carrinho: { itensDeCarrinho },
   } = estado
-
   
   const adicionarAoCarrinho = (item: ItemDeCarrinho) => {
     const existeItem = itensDeCarrinho.find((x) => x._id === produto._id)
@@ -44,7 +43,7 @@ function ItemDeProduto({ produto }: { produto: Produto }) {
   }, [produto.nome]);
   
   return (
-    <Card>
+    <Card className={`${modo === 'claro' ? "bg-light" : "bg-dark"}`}>
       <Link to={`/produto/${produto.slug}`}>
         <img style={{height: height}} src={produto.imagem} className="card-img-top" alt={produto.nome} />
       </Link>
@@ -56,7 +55,7 @@ function ItemDeProduto({ produto }: { produto: Produto }) {
         <Card.Text>R${produto.preco}</Card.Text>
         {
           produto.emEstoque === 0 && window.location.pathname === '/' ? (
-            <Button variant="light" disabled>
+            <Button variant={modo === 'claro' ? "dark" : "light"} disabled>
               Indisponível
             </Button>
           ) : window.location.pathname === '/' ? (

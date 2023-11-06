@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import {
   Badge,
   Button,
@@ -11,7 +11,7 @@ import {
   Navbar,
   NavDropdown,
 } from 'react-bootstrap'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -22,16 +22,48 @@ import MensagemDeAlerta from './componentes/MensagemDeAlerta'
 import { getError } from './utilidades'
 import { ApiError } from './types/ApiError'
 import SearchBox from './componentes/SearchBox'
+import { FiMenu } from 'react-icons/fi'
+import Sidebar from './componentes/SideBar'
+import ButtonMode from './componentes/ButtonMode'
+import SignInDropDown from './componentes/SignInDropDown'
+import Carrinho from './componentes/Carrinho'
 
 function App() {
   const {
     estado: { modo, carrinho, infoDeUsuario },
     dispatch,
   } = useContext(Contexto)
+  
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false)
+  
+  const { data: categorias, isLoading, error } = useGetCategoriasQuery()
+  
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => 
+  {
+    document.querySelector('footer')!.className = ''
+    document.body.className = ''
+    document.body.classList.add(modo === 'claro' ? "bg-light" : "bg-dark")
+    document.querySelector('footer')!.classList.add(modo === 'claro' ? "text-dark" : "text-light")
+  }, [modo])
+
+  const sideBar = useRef<HTMLDivElement>(null)
+  const menuIcon = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    document.body.setAttribute('data-bs-theme', modo === 'claro' ? 'light' : 'dark')
-  }, [modo])
+    const handleOutSideClick = (event : any) => {
+      if (!sideBar.current?.contains(event.target) && !menuIcon.current?.contains(event.target)) {
+        setOpen(false)
+        console.log(open)
+      }
+    };
+    window.addEventListener("mousedown", handleOutSideClick);
+
+    return () => {
+      window.removeEventListener("mousedown", handleOutSideClick);
+    };
+  }, [sideBar, menuIcon]);
 
   const mudarModo = () => {
     dispatch({ type: 'MUDAR_MODO' })
@@ -45,9 +77,18 @@ function App() {
     window.location.href = '/entrar'
   }
 
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false)
+  const location = useLocation()
+  const [backScreen, setBackScreen] = useState("ReciclaOn")
 
-  const { data: categorias, isLoading, error } = useGetCategoriasQuery()
+  useEffect(() =>
+  {
+    window.innerWidth < 768 && window.location.pathname !== '/'
+      ? setBackScreen("⮜")
+      : setBackScreen("ReciclaOn")
+    
+    console.log(backScreen)
+  }, [location.pathname])
+  
 
   return (
     <div className="d-flex flex-column vh-100">
@@ -55,92 +96,41 @@ function App() {
       <header>
         <Navbar
           className="d-flex flex-column align-items-stretch p-2 pb-0 mb-3"
-          expand="lg"
+          expand="md"
         >
           <div className="d-flex justify-content-between align-items-center">
             <LinkContainer to="/" className="header-link">
-              <Navbar.Brand>ReciclaOn</Navbar.Brand>
+              <Navbar.Brand>{backScreen}</Navbar.Brand>
             </LinkContainer>
             <SearchBox />
 
-            <Navbar.Collapse>
-              <Nav className="w-100 justify-content-end">
-                <Link
-                  to="#"
-                  className="nav-link header-link"
-                  onClick={mudarModo}
-                >
-                  <i
-                    className={modo === 'claro' ? 'fa fa-sun' : 'fa fa-moon'}
-                  ></i>{' '}
-                  {modo === 'claro' ? 'Claro' : 'Escuro'}
-                </Link>
-
-                {infoDeUsuario ? (
-                  <NavDropdown
-                    className="header-link"
-                    title={`Olá, ${infoDeUsuario.nome}`}
-                  >
-                    <LinkContainer to="/perfil">
-                      <NavDropdown.Item>Perfil de Usuário</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/historicoDoPedido">
-                      <NavDropdown.Item>Histórico de Pedido</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/cadastrarProduto">
-                      <NavDropdown.Item>Cadastrar Produto</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/meusProdutos">
-                      <NavDropdown.Item>Meu(s) Produto(s)</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Divider />
-                    <Link
-                      className="dropdown-item"
-                      to="#signout"
-                      onClick={sair}
-                    >
-                      {' '}
-                      Sair{' '}
-                    </Link>
-                  </NavDropdown>
-                ) : (
-                  <NavDropdown className="header-link" title={`Entrar`}>
-                    <LinkContainer to="/entrar">
-                      <NavDropdown.Item>Entrar</NavDropdown.Item>
-                    </LinkContainer>
-                    <hr />
-                    <LinkContainer to="/cadastrar">
-                      <NavDropdown.Item>Cadastrar</NavDropdown.Item>
-                    </LinkContainer>
-                  </NavDropdown>
-                )}
+            <Navbar.Collapse className='d-lg-none'>
+              <Nav className="w-100 justify-content-end flex-row">
+                <ButtonMode 
+                  mode={modo}
+                  onClick={() => mudarModo()}
+                />
+                <SignInDropDown userInfo={infoDeUsuario} onClick2={() => sair()}/>
                 <Link to="/historicoDoPedido" className="nav-link header-link">
                   Pedidos
                 </Link>
                 <Link to="/sustentabilidade" className="nav-link header-link">
                   Sustentabilidade
                 </Link>
-                <Link to="/carrinho" className="nav-link header-link p-0">
-                  {
-                    <span className="cart-badge">
-                      {carrinho.itensDeCarrinho.reduce(
-                        (a, c) => a + c.quantidade,
-                        0
-                      )}
-                    </span>
-                  }
-                  <svg
-                    fill="#ffffff"
-                    viewBox="130 150 200 300"
-                    width="40px"
-                    height="40px"
-                  >
-                    <path d="M 110.164 188.346 C 104.807 188.346 100.437 192.834 100.437 198.337 C 100.437 203.84 104.807 208.328 110.164 208.328 L 131.746 208.328 L 157.28 313.233 C 159.445 322.131 167.197 328.219 176.126 328.219 L 297.409 328.219 C 306.186 328.219 313.633 322.248 315.951 313.545 L 341.181 218.319 L 320.815 218.319 L 297.409 308.237 L 176.126 308.237 L 150.592 203.332 C 148.426 194.434 140.675 188.346 131.746 188.346 L 110.164 188.346 Z M 285.25 328.219 C 269.254 328.219 256.069 341.762 256.069 358.192 C 256.069 374.623 269.254 388.165 285.25 388.165 C 301.247 388.165 314.431 374.623 314.431 358.192 C 314.431 341.762 301.247 328.219 285.25 328.219 Z M 197.707 328.219 C 181.711 328.219 168.526 341.762 168.526 358.192 C 168.526 374.623 181.711 388.165 197.707 388.165 C 213.704 388.165 226.888 374.623 226.888 358.192 C 226.888 341.762 213.704 328.219 197.707 328.219 Z M 197.707 348.201 C 203.179 348.201 207.434 352.572 207.434 358.192 C 207.434 363.812 203.179 368.183 197.707 368.183 C 192.236 368.183 187.98 363.812 187.98 358.192 C 187.98 352.572 192.236 348.201 197.707 348.201 Z M 285.25 348.201 C 290.722 348.201 294.977 352.572 294.977 358.192 C 294.977 363.812 290.722 368.183 285.25 368.183 C 279.779 368.183 275.523 363.812 275.523 358.192 C 275.523 352.572 279.779 348.201 285.25 348.201 Z" />
-                  </svg>
-                  <span>Carrinho</span>
-                </Link>
+                <Carrinho carrinho={carrinho}/>
               </Nav>
             </Navbar.Collapse>
+            <div ref={menuIcon}>
+              <FiMenu 
+                role='button' 
+                className='d-md-none cursor-pointer' 
+                color='white'
+                size={40}
+                onClick={() => open === false ? setOpen(true) : setOpen(false)}
+                aria-controls='collapse'
+                aria-expanded={open}
+              />
+            </div>
           </div>
           {
             /**          <div className="sub-header">
@@ -165,6 +155,16 @@ function App() {
           </div> */
           }
         </Navbar>
+        <div ref={sideBar}>
+          <Sidebar
+            userInfo={infoDeUsuario}
+            open={open}
+            mode={modo}
+            onClick={() => mudarModo()}
+            onClick2={() => sair()}
+            carrinho={carrinho}
+          />
+        </div>
       </header>
 
       {sidebarIsOpen && (
@@ -230,7 +230,7 @@ function App() {
         </Container>
       </main>
       <footer>
-        <div className="text-center">Todos os direitos reservados</div>
+        <div className={`text-center`}>Todos os direitos reservados</div>
       </footer>
     </div>
   )

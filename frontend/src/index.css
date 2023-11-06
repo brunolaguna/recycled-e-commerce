@@ -6,6 +6,35 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+/*
+@media (min-width: 741px)
+{
+  .navbar-expand-lg .navbar-collapse 
+  {
+    display: flex!important;
+    flex-basis: auto;
+  }
+}
+
+@media (min-width: 741px)
+{
+  #mobile 
+  {
+    flex-direction: row;
+  }
+}
+*/
+
+.card
+{
+  border: 1.5px solid #d8d8d8;
+  transition: 0.4s;
+}
+
+.card:hover
+{
+  border: 1.5px solid rgba(0, 128, 0, 0.836)
+}
 
 .produto-image {
   max-width: 400px;
@@ -132,13 +161,6 @@ button.side-navbar-user:hover {
 nav
 {
   background-color: green;
-}
-
-#q
-{
-  left: 200px;
-  position: absolute;
-  visibility: hidden;
 }
 
 #button-search
