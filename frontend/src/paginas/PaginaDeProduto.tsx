@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -25,7 +25,8 @@ export default function PaginaDeProduto() {
 
   const navigate = useNavigate()
 
-  const adicionarAoCarrinho = () => {
+  const adicionarAoCarrinho = () => 
+  {
     const existeItem = carrinho.itensDeCarrinho.find(
       (x) => x._id === produto!._id
     )
@@ -41,6 +42,30 @@ export default function PaginaDeProduto() {
     toast.success('Produto adicionado ao carrinho')
     navigate('/carrinho')
   }
+  const [buttonPosition, setButtonPosition] = useState("auto")
+  const [sizeScreen, setSizeScreen] = useState(getWindowSize())
+
+  function getWindowSize()
+  {
+    const {innerWidth} = window;
+    return {innerWidth};
+  }
+  useEffect(() => 
+  {
+    function handleWindowResize()
+    {
+      setSizeScreen(getWindowSize())
+    }
+    window.addEventListener('resize', handleWindowResize)
+
+    setButtonPosition(window.innerWidth < 992 && window.innerWidth > 765 ? "15px" : "auto")
+
+    return () =>
+    {
+      window.removeEventListener('resize', handleWindowResize)
+    }
+  }, [sizeScreen])
+  
   return isLoading ? (
     <Carregando />
   ) : error ? (
@@ -82,13 +107,13 @@ export default function PaginaDeProduto() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
-                    <Col>Preço:</Col>
+                    <Col><b>Preço:</b></Col>
                     <Col>R${produto.preco}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Status:</Col>
+                    <Col><b>Status:</b></Col>
                     <Col>
                       {produto.emEstoque > 0 ? (
                         <Badge bg="success">Disponível</Badge>
@@ -101,8 +126,8 @@ export default function PaginaDeProduto() {
                 {produto.emEstoque > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button onClick={adicionarAoCarrinho} variant="primary">
-                        Adicionar ao Carrinho
+                      <Button onClick={adicionarAoCarrinho} variant="primary" className='position-relative p-3' style={{right: buttonPosition}}>
+                        <b>Adicionar ao Carrinho</b>
                       </Button>
                     </div>
                   </ListGroup.Item>
@@ -111,6 +136,9 @@ export default function PaginaDeProduto() {
             </Card.Body>
           </Card>
         </Col>
+      </Row>
+      <Row>
+        
       </Row>
     </div>
   )

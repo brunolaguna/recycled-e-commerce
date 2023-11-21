@@ -55,7 +55,7 @@ function App() {
     const handleOutSideClick = (event : any) => {
       if (!sideBar.current?.contains(event.target) && !menuIcon.current?.contains(event.target)) {
         setOpen(false)
-        console.log(open)
+        //console.log(open)
       }
     };
     window.addEventListener("mousedown", handleOutSideClick);
@@ -86,7 +86,7 @@ function App() {
       ? setBackScreen("⮜")
       : setBackScreen("ReciclaOn")
     
-    console.log(backScreen)
+    //console.log(backScreen)
   }, [location.pathname])
   
 

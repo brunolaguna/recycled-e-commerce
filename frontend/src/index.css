@@ -186,3 +186,8 @@ nav
 {
   color: #3c8004e8;
 }
+
+th, td
+{
+  text-align: center;
+}

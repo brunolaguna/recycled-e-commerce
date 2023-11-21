@@ -28,7 +28,7 @@ export default function Sidebar({userInfo, open, mode, carrinho, onClick, onClic
       }, [open, wasClicked, decision]);
     */
 
-    console.log(decision)
+    //console.log(decision)
 
     return (
         <Collapse in={open} dimension="width">

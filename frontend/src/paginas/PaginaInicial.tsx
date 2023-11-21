@@ -32,7 +32,7 @@ export default function PaginaInicial()
       </Helmet>
       {produtos!.map((produto) => (
         <Col key={produto.slug} sm={6} md={4} lg={3}>
-          <ItemDeProduto produto={produto} />
+          <ItemDeProduto produto={produto}/>
         </Col>
       ))}
     </Row>
