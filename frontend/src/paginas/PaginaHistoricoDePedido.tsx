@@ -7,6 +7,7 @@ import { useGetHistoricoPedidoQuery } from '../hooks/hookPedido'
 import { ApiError } from '../types/ApiError'
 import { getError } from '../utilidades'
 import { useEffect, useState } from 'react'
+import Rating from '../componentes/Rating'
 
 export default function PaginaHistoricoDePedido() 
 {
@@ -16,13 +17,15 @@ export default function PaginaHistoricoDePedido()
 
   const [ratings, setRatings] = useState<boolean[][]>()
   const [rating, setRating] = useState([false, false, false, false, false])
-  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState<boolean[][]>();
+  const [modal, setModal] = useState(false)
   
   //console.log(ratings)
 
   useEffect(() =>
   {
     setRatings(pedidos?.map(() => [false, false, false, false, false]))
+    setIsClicked(pedidos?.map(() => [false, false, false, false, false]))
     //console.log(rating)
   }, [pedidos])
 
@@ -37,13 +40,13 @@ export default function PaginaHistoricoDePedido()
         ratings[index] = newRating
         //console.log(newRating)
         setRating(newRating);
-        setIsClicked(false)
+        setIsClicked(pedidos?.map(() => [false, false, false, false, false]))
       }
     }
   };
   const handleMouseOut = (index: number) => 
   {
-    if ( !isClicked )
+    if ( !isClicked![index].includes(true) )
     {
       setRating([false, false, false, false, false]);
       ratings![index] = [false, false, false, false, false]
@@ -55,10 +58,17 @@ export default function PaginaHistoricoDePedido()
     if (!isClicked)
     {
       */
-      setIsClicked(true)
-      var startClicked = ratings![index].map((_, i) => i <= indexStar);
+     var startClicked = ratings![index].map((_, i) => i <= indexStar);
+     //setIsClicked(ratings?.map((_, index) => startClicked))
+     isClicked![index] = ratings![index].map((_, i) => i <= indexStar)
       setRating(startClicked)
+      //setIsClicked(startClicked)
+      
       ratings![index] = startClicked
+      //console.log(isClicked![index][indexStar])
+      setModal(true)
+      return startClicked
+      //console.log(clickOnStar)
       /*
     } else {
       setIsClicked(false)
@@ -128,7 +138,11 @@ export default function PaginaHistoricoDePedido()
                               onMouseOver={() => handleMouseOver(index, indexStar, isHovered)}
                               onMouseOut={() => handleMouseOut(index)}
                               onClick={() => clickOnStar(index, indexStar)}
-                              className={`far fa-star`}
+                              className={
+                                isClicked![index][indexStar]
+                                  ? 'fas fa-star'
+                                  : 'far fa-star'
+                              }
                               style={isHovered ? {color:"gold"} : {color: "black"}}
                               role='button'
                             />             
@@ -142,6 +156,7 @@ export default function PaginaHistoricoDePedido()
           </tbody>
         </table>
       )}
+      <Rating onClick={modal}/>
     </div>
   )
 }
