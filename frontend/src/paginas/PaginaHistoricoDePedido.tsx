@@ -6,14 +6,18 @@ import MensagemDeAlerta from '../componentes/MensagemDeAlerta'
 import { useGetHistoricoPedidoQuery } from '../hooks/hookPedido'
 import { ApiError } from '../types/ApiError'
 import { getError } from '../utilidades'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Rating from '../componentes/Rating'
 
 export default function PaginaHistoricoDePedido() 
 {
+  
   const navigate = useNavigate()
-
+  
   const { data: pedidos, isLoading, error } = useGetHistoricoPedidoQuery()
+  
+  const starRef = useRef(new Array())
+  console.log(starRef)
 
   const [ratings, setRatings] = useState<boolean[][]>()
   const [rating, setRating] = useState([false, false, false, false, false])
@@ -52,6 +56,7 @@ export default function PaginaHistoricoDePedido()
       ratings![index] = [false, false, false, false, false]
     }
   };
+  const [starIndex, setStarIndex] = useState(0)
   const clickOnStar = (index: number, indexStar: number) =>
   {
     /*
@@ -67,7 +72,9 @@ export default function PaginaHistoricoDePedido()
       ratings![index] = startClicked
       //console.log(isClicked![index][indexStar])
       setModal(true)
-      return startClicked
+      setStarIndex(index)
+
+      //return startClicked
       //console.log(clickOnStar)
       /*
     } else {
@@ -75,7 +82,20 @@ export default function PaginaHistoricoDePedido()
     }
     */
   }
+  const getDataShowFromRatingComponent = (index: number, indexStar: number) =>
+  {
+    setModal(false)
+    setRatings(pedidos?.map(() => [false, false, false, false, false]))
+    setIsClicked(pedidos?.map(() => [false, false, false, false, false]))
+  }
 
+  //const starRefs = useRef<Record<number, React.RefObject<any>>>({})
+//
+  //const starBlock = pedidos?.map((pedido, index) => {
+  //  starRefs.current[index] = useRef(null);
+  //})
+  
+  
 
   return (
     <div>
@@ -95,7 +115,7 @@ export default function PaginaHistoricoDePedido()
           <thead>
             <tr>
               <th>ID</th>
-              <th>DATA</th>
+              {/*<th>DATA</th>*/}
               <th>TOTAL</th>
               <th>PAGO</th>
               <th>ENVIADO</th>
@@ -108,7 +128,7 @@ export default function PaginaHistoricoDePedido()
               pedidos!.map((pedido, index) => (
                 <tr key={pedido._id}>
                   <td>{pedido._id}</td>
-                  <td>{pedido.criadoEm}</td> {/* aTENÇÃO*/}
+                  {/*<td>{pedido.createdAt}</td>  aTENÇÃO*/}
                   <td>{pedido.precoTotal.toFixed(2)}</td>
                   <td>
                     {pedido.foiPago ? pedido.pagoEm : 'Não'}
@@ -128,7 +148,7 @@ export default function PaginaHistoricoDePedido()
                     </Button>
                   </td>
                   <td>
-                    <div key={index}>
+                    <div key={index} ref={(element) => starRef.current.push(element)}>
                       {
                         ratings
                           ? ratings[index]?.map((isHovered, indexStar) =>
@@ -156,7 +176,7 @@ export default function PaginaHistoricoDePedido()
           </tbody>
         </table>
       )}
-      <Rating onClick={modal}/>
+      <Rating onClick={modal} setOnclick={getDataShowFromRatingComponent} starRefs={starRef.current[starIndex]} />
     </div>
   )
 }
