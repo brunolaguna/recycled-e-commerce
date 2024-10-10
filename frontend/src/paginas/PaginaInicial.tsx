@@ -6,16 +6,19 @@ import ItemDeProduto from '../componentes/ItemDeProduto'
 import { useGetProdutosQuery } from '../hooks/hookProduto'
 import { ApiError } from '../types/ApiError'
 import { getError } from '../utilidades'
-import SearchBox from '../componentes/SearchBox'
+import { useContext, useEffect } from 'react'
+import { Contexto } from '../Contexto'
 
 export default function PaginaInicial() 
 {
-  const { data: produtos, isLoading, error } = useGetProdutosQuery()
+  const {estado: {searchProduct}} = useContext(Contexto)
+  console.log(searchProduct)
+  const { data: produtos, isLoading, error } = useGetProdutosQuery(searchProduct)
   
   /*
   const callBack = (data) =>
   {
-
+  
   }
   */
 
@@ -30,11 +33,12 @@ export default function PaginaInicial()
       <Helmet>
         <title>ReciclaOn</title>
       </Helmet>
-      {produtos!.map((produto) => (
-        <Col key={produto.slug} sm={6} md={4} lg={3}>
-          <ItemDeProduto produto={produto}/>
-        </Col>
-      ))}
+      {produtos &&
+        produtos.map((produto) => (
+          <Col key={produto.slug} sm={6} md={4} lg={3}>
+            <ItemDeProduto produto={produto}/>
+          </Col>
+        ))}
     </Row>
   )
 }

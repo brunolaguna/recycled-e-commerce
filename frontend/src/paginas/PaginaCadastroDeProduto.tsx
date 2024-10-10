@@ -23,6 +23,7 @@ export function PaginaCadastroDeProduto()
   const [quantidadeDoProduto, setQuantidadeDoProduto] = useState<number>(0)
   const [marcaDoProduto, setMarcaDoProduto] = useState<string>('')
   const [descricaoDoProduto, setDescricaoDoProduto] = useState<string>('')
+  const [pix, setPix] = useState<string>('')
 
   const avaliacao : number = 0
   const visualizacoes : number = 0
@@ -51,7 +52,8 @@ export function PaginaCadastroDeProduto()
         avaliacao,
         visualizacoes,
         descricaoDoProduto,
-        proprietario
+        proprietario,
+        pix
       })
       navigate('/editarProdutos')
     } catch (err) {
@@ -128,6 +130,17 @@ export function PaginaCadastroDeProduto()
             onChange={(e) => setDescricaoDoProduto(e.target.value)}
             required
             placeholder="Camiseta da Nike de Garrafa Pet"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="descricao">
+          <Form.Label>Pix</Form.Label>
+          <Form.Control
+            value={pix}
+            type="text"
+            onChange={(e) => setPix(e.target.value)}
+            required
+            placeholder="c3d32ec2-5de6-4006-a51f-f222b39c4"
           />
         </Form.Group>
 

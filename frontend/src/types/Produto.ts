@@ -10,4 +10,5 @@ export type Produto = {
   descricao: string
   avaliacao: number
   visualizacoes: number
+  pix: string
 }

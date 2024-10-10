@@ -37,6 +37,9 @@ export class Produto {
   @propriedade({ required: true })
   public proprietario!: string
 
+  @propriedade({ required: true })
+  public pix!: string
+
 }
 
 export const ModeloDeProduto = getModelForClass(Produto)

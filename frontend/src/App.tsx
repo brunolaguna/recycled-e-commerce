@@ -88,7 +88,17 @@ function App() {
     
     //console.log(backScreen)
   }, [location.pathname])
-  
+
+  const searchBoxRef = useRef(null)
+
+  /*const [shareState, setShareState] = useState('')
+
+  const shareData = (data : string) =>
+  {
+    setShareState(data)
+    console.log(data)
+  }
+  */
 
   return (
     <div className="d-flex flex-column vh-100">
@@ -102,7 +112,7 @@ function App() {
             <LinkContainer to="/" className="header-link">
               <Navbar.Brand>{backScreen}</Navbar.Brand>
             </LinkContainer>
-            {/*<SearchBox />*/}
+            <SearchBox />{/*sendDataToParent={shareData}*/}
 
             <Navbar.Collapse className='d-lg-none'>
               <Nav className="w-100 justify-content-end flex-row">

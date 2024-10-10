@@ -8,7 +8,27 @@ export const rotaDeProduto = express.Router()
 rotaDeProduto.get(
   '/',
   expressAsyncHandler(async (req, res) => {
-    const produtos = await ModeloDeProduto.find()
+    const produtos = await ModeloDeProduto.find().sort({ emEstoque: -1 })
+    console.log(typeof produtos)
+    //console.log(produtos)
+    res.json(produtos)
+  })
+)
+
+rotaDeProduto.get(
+  '/:consulta',
+  expressAsyncHandler(async (req, res) => {
+    const regex = new RegExp(`^${req.params.consulta}`, 'i')
+    //const query = req.params.consulta ? {nome: req.params.consulta} : {}
+    console.log(req.params.consulta)
+    //console.log('estou aqui' + req.params.consulta)
+    const produtos =
+      req.params.consulta
+        && await ModeloDeProduto.find({ nome: { $regex: regex } }).sort({
+            nome: 1,
+          })
+
+    console.log(produtos)
     res.json(produtos)
   })
 )
@@ -37,7 +57,9 @@ rotaDeProduto.get(
 rotaDeProduto.get(
   '/proprietario/:proprietario',
   expressAsyncHandler(async (req, res) => {
-    const produto = await ModeloDeProduto.find({ proprietario: req.params.proprietario })
+    const produto = await ModeloDeProduto.find({
+      proprietario: req.params.proprietario,
+    })
     if (produto) {
       res.json(produto)
     } else {
@@ -55,12 +77,11 @@ rotaDeProduto.get(
     //try{
     //  await ModeloDeProduto.findById(req.body._id)
     //  res.status(200).json({message: 'Produto atualizado com sucesso!'})
-//
+    //
     //} catch {
     //  res.status(404).json({message: 'Produto não encontrado!'})
     //}
-    if (req.body._id) 
-    {
+    if (req.body._id) {
       const dadosDoProduto = await ModeloDeProduto.findById(req.body._id)
 
       res.json({ dadosDoProduto })
@@ -68,8 +89,7 @@ rotaDeProduto.get(
     } else {
       res.status(404).json({ message: 'Usuario não encontrado' })
     }
-    }
-  )
+  })
 )
 
 rotaDeProduto.put(
@@ -78,14 +98,13 @@ rotaDeProduto.put(
   expressAsyncHandler(async (req: Request, res: Response) => {
     //const nome = await ModeloDeProduto.findOne(req.body.nome)
     //const proprietario = await ModeloDeProduto.findOne(req.body.proprietario)
-    try{
+    try {
       await ModeloDeProduto.updateOne(
         {
-          _id: req.body._id
+          _id: req.body._id,
         },
         {
-          $set:
-          {
+          $set: {
             nome: req.body.nome,
             slug: req.body.slug,
             imagem: req.body.imagem,
@@ -97,50 +116,44 @@ rotaDeProduto.put(
             visualizacoes: req.body.visualizacoes,
             descricao: req.body.descricaoDoProduto,
             proprietario: req.body.proprietario,
-          }
+          },
         },
         {
           upsert: false, // Set to true if you want to insert a new document if no match is found
         }
       )
-      res.status(200).json({message: 'Produto atualizado com sucesso!'})
-
+      res.status(200).json({ message: 'Produto atualizado com sucesso!' })
     } catch {
-      res.status(404).json({message: 'Produto não encontrado!'})
+      res.status(404).json({ message: 'Produto não encontrado!' })
     }
-    }
-  )
+  })
 )
 
 rotaDeProduto.put(
   '/produtoComprado',
   autenticado,
-  expressAsyncHandler(async (req: Request, res: Response) => 
-  {
+  expressAsyncHandler(async (req: Request, res: Response) => {
     //const nome = await ModeloDeProduto.findOne(req.body.nome)
     //const proprietario = await ModeloDeProduto.findOne(req.body.proprietario)
-    try{
+    try {
       await ModeloDeProduto.updateOne(
         {
-          _id: req.body._id
+          _id: req.body._id,
         },
         {
-          $set:
-          {
-            emEstoque: req.body.quantidadeDoProduto
-          }
+          $set: {
+            emEstoque: req.body.quantidadeDoProduto,
+          },
         },
         {
           upsert: false, // Set to true if you want to insert a new document if no match is found
         }
       )
-      res.status(200).json({message: 'Pedido realizado com sucesso!'})
-
+      res.status(200).json({ message: 'Pedido realizado com sucesso!' })
     } catch {
-      res.status(404).json({message: 'Erro ao realizar a compra!'})
+      res.status(404).json({ message: 'Erro ao realizar a compra!' })
     }
-    }
-  )
+  })
 )
 
 rotaDeProduto.post(
@@ -149,29 +162,31 @@ rotaDeProduto.post(
     const produtoCadastrado = await ModeloDeProduto.create({
       nome: req.body.nome,
       slug: req.body.slug,
-      imagem : req.body.imagem,
-      categoria : req.body.categoriaDoProduto,
-      preco : req.body.precoDoProduto,
+      imagem: req.body.imagem,
+      categoria: req.body.categoriaDoProduto,
+      preco: req.body.precoDoProduto,
       emEstoque: req.body.quantidadeDoProduto,
       marca: req.body.marcaDoProduto,
-      avaliacao : req.body.avaliacao,
-      visualizacoes : req.body.visualizacoes,
+      avaliacao: req.body.avaliacao,
+      visualizacoes: req.body.visualizacoes,
       descricao: req.body.descricaoDoProduto,
-      proprietario: req.body.proprietario
+      proprietario: req.body.proprietario,
+      pix: req.body.pix
     } as Produto)
     res.json({
       _id: produtoCadastrado._id,
       nome: produtoCadastrado.nome,
       slug: produtoCadastrado.slug,
-      imagem : produtoCadastrado.imagem,
-      categoria : produtoCadastrado.categoria,
-      preco : produtoCadastrado.preco,
+      imagem: produtoCadastrado.imagem,
+      categoria: produtoCadastrado.categoria,
+      preco: produtoCadastrado.preco,
       emEstoque: produtoCadastrado.emEstoque,
       marca: produtoCadastrado.marca,
-      avaliacao : produtoCadastrado.avaliacao,
-      visualizacoes : produtoCadastrado.visualizacoes,
+      avaliacao: produtoCadastrado.avaliacao,
+      visualizacoes: produtoCadastrado.visualizacoes,
       descricao: produtoCadastrado.descricao,
-      proprietario: produtoCadastrado.proprietario
+      proprietario: produtoCadastrado.proprietario,
+      pix: produtoCadastrado.pix
     })
   })
 )

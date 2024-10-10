@@ -24,6 +24,7 @@ export function PaginaEditarProduto()
   const [quantidadeDoProduto, setQuantidadeDoProduto] = useState<number>(0)
   const [marcaDoProduto, setMarcaDoProduto] = useState<string>('')
   const [descricaoDoProduto, setDescricaoDoProduto] = useState<string>('')
+  const [pix, setPix] = useState<string>('')
 
   const proprietario : string = JSON.parse(localStorage.getItem('infoDeUsuario')!).email
 
@@ -45,6 +46,7 @@ export function PaginaEditarProduto()
           setQuantidadeDoProduto(lista_de_produtos[i].emEstoque);
           setMarcaDoProduto(lista_de_produtos[i].marca);
           setDescricaoDoProduto(lista_de_produtos[i].descricao);
+          setPix(lista_de_produtos[i].pix);
           break; // Optionally, you can break out of the loop once a match is found
         }
       }
@@ -86,9 +88,9 @@ export function PaginaEditarProduto()
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Vender Produto</title>
+        <title>Editar Produto</title>
       </Helmet>
-      <h1 className="my-3">Vender Produto</h1>
+      <h1 className="my-3">Editar Produto</h1>
       <Form onSubmit={enviarForm}>
         <Form.Label>Nome</Form.Label>
         <Form.Group className="mb-3" controlId="nome">
@@ -159,6 +161,17 @@ export function PaginaEditarProduto()
             onChange={(e) => setDescricaoDoProduto(e.target.value)}
             required
             placeholder="Camiseta da Nike de Garrafa Pet"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="descricao">
+          <Form.Label>Pix</Form.Label>
+          <Form.Control
+            value={pix}
+            type="text"
+            onChange={(e) => setPix(e.target.value)}
+            required
+            placeholder="c3d32ec2-5de6-4006-a51f-f222b39c4"
           />
         </Form.Group>
 

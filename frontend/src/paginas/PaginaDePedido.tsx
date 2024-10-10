@@ -20,6 +20,7 @@ import { Contexto } from '../Contexto'
 import { ApiError } from '../types/ApiError'
 import { getError } from '../utilidades'
 import { usePedidoRealizadoMutation } from '../hooks/hookProduto'
+import GenerateQRCode from '../componentes/GenerateQRCode'
 
 export default function PaginaDePedido() {
   const { estado } = useContext(Contexto)
@@ -229,6 +230,15 @@ export default function PaginaDePedido() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
+                {
+                  pedido.metodoDePagamento === 'Pix'
+                    ? <ListGroup.Item>
+                      <Row>
+                        {/*<Col><GenerateQRCode QRCode={pedido.itensDePedido}/></Col>*/}
+                      </Row>
+                    </ListGroup.Item>
+                    : null
+                }
                 {!pedido.foiPago && (
                   <ListGroup.Item>
                     {isPending ? (

@@ -1,13 +1,28 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import apiClient from '../apiClient'
 import { Produto } from '../types/Produto'
+import { AppState } from '../Contexto'
 import { InfoDeUsuario } from '../types/InfoDeUsuario'
 
-export const useGetProdutosQuery = () =>
+export const useGetProdutosQuery = (consulta: string | null | AppState) =>
   useQuery({
-    queryKey: ['produtos'],
-    queryFn: async () => (await apiClient.get<Produto[]>(`api/produtos`)).data,
+    queryKey: ['produtos', consulta ? consulta : ''],
+    queryFn: async () => (await apiClient.get<Produto[]>(`api/produtos/${consulta}`)).data,
   })
+
+export const usePostSearchProduct = () => /*Atencao*/
+useMutation({
+  mutationFn: async ({
+    search_product
+  }: {
+    search_product : string
+  }) =>
+    (
+      await apiClient.post(`api/produtos`, {
+        search_product
+      })
+    ).data,
+})
 
 export const useGetDetalhesDoProdutoPorSlugQuery = (slug: string) =>
   useQuery({
@@ -42,7 +57,8 @@ useMutation({
     avaliacao,
     visualizacoes,
     descricaoDoProduto,
-    proprietario
+    proprietario,
+    pix
   }: {
     nome : string
     slug : string
@@ -55,6 +71,7 @@ useMutation({
     visualizacoes : number
     descricaoDoProduto: string
     proprietario : string
+    pix : string
   }) =>
     (
       await apiClient.post<InfoDeUsuario>(`api/produtos/cadastrarProduto`, {
@@ -68,7 +85,8 @@ useMutation({
         avaliacao,
         visualizacoes,
         descricaoDoProduto,
-        proprietario
+        proprietario,
+        pix
       })
     ).data,
 })

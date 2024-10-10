@@ -2,10 +2,11 @@ import React from 'react'
 import { Carrinho, ItemDeCarrinho, EnderecoDeEnvio } from './types/Carrinho'
 import { InfoDeUsuario } from './types/InfoDeUsuario'
 
-type AppState = {
+export type AppState = {
   modo: string
   carrinho: Carrinho
   infoDeUsuario?: InfoDeUsuario
+  searchProduct: string | AppState
 }
 
 const initialState: AppState = {
@@ -33,6 +34,7 @@ const initialState: AppState = {
     precoDeEnvio: 0,
     precoTotal: 0,
   },
+  searchProduct: ''
 }
 
 type Action =
@@ -44,9 +46,11 @@ type Action =
   | { type: 'USUARIO_SAIR' }
   | { type: 'SALVAR_ENDERECO_DE_ENVIO'; payload: EnderecoDeEnvio }
   | { type: 'SALVAR_METODO_DE_PAGAMENTO'; payload: string }
+  | { type: 'SEARCH_PRODUCT'; payload: string | AppState }
 
 function reducer(estado: AppState, action: Action): AppState {
-  switch (action.type) {
+  switch (action.type) 
+  {
     case 'MUDAR_MODO':
       localStorage.setItem('modo', estado.modo === 'escuro' ? 'claro' : 'escuro')
       return { ...estado, modo: estado.modo === 'escuro' ? 'claro' : 'escuro' }
@@ -77,6 +81,7 @@ function reducer(estado: AppState, action: Action): AppState {
 
     case 'AUTENTICAR_USUARIO':
       return { ...estado, infoDeUsuario: action.payload }
+
     case 'USUARIO_SAIR':
       return {
         modo:
@@ -97,6 +102,7 @@ function reducer(estado: AppState, action: Action): AppState {
           precoDeEnvio: 0,
           precoTotal: 0,
         },
+        searchProduct: ''
       }
     case 'SALVAR_ENDERECO_DE_ENVIO':
       return {
@@ -110,6 +116,13 @@ function reducer(estado: AppState, action: Action): AppState {
       return {
         ...estado,
         carrinho: { ...estado.carrinho, metodoDePagamento: action.payload },
+      }
+    case 'SEARCH_PRODUCT':
+      const searchProduct = action.payload
+      //console.log(searchProduct)
+      return {
+        ...estado,
+        searchProduct
       }
     default:
       return estado
